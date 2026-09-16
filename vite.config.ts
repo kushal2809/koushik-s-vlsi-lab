@@ -32,7 +32,6 @@ export default defineConfig({
   ...(process.env["GITHUB_ACTIONS"]
     ? {
         nitro: {
-          preset: "static",
           output: {
             dir: ".output",
             publicDir: ".output/public",
