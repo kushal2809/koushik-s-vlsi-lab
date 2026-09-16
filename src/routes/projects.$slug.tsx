@@ -43,7 +43,7 @@ function ProjectDetail() {
         </Link>
       </div>
 
-      <PageHeader eyebrow={project.status} title={project.name} intro={project.tagline} />
+      <PageHeader eyebrow={project.status} title={project.name} intro={project.description} />
 
       <Section>
         <SectionTitle title="Design specifications" />
