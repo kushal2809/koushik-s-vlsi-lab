@@ -3,9 +3,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Download, ExternalLink } from "lucide-react";
 import { PageHeader, Section, Tag } from "@/components/section";
 import { skillGroups } from "@/data/skills";
-import resumeAsset from "@/assets/koushik-resume-v2.pdf.asset.json";
+import resumeUrl from "@/assets/koushik-resume-v2.pdf?url";
 
-const RESUME_URL = resumeAsset.url;
+const RESUME_URL = resumeUrl;
 
 export const Route = createFileRoute("/resume")({
   head: () => ({
