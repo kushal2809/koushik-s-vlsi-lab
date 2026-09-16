@@ -21,6 +21,7 @@ import { Route as KnowledgeIndexRouteImport } from './routes/knowledge.index'
 import { Route as KnowledgeSlugRouteImport } from './routes/knowledge.$slug'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
+import { Route as ProjectsOrcaTopRouteImport } from './routes/projects.orca-top'
 import { Route as ProjectsRavenWrapperRouteImport } from './routes/projects.raven-wrapper'
 
 const IndexRoute = IndexRouteImport.update({
@@ -83,6 +84,11 @@ const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ProjectsRoute,
 } as any)
+const ProjectsOrcaTopRoute = ProjectsOrcaTopRouteImport.update({
+  id: '/orca-top',
+  path: '/orca-top',
+  getParentRoute: () => ProjectsRoute,
+} as any)
 const ProjectsRavenWrapperRoute = ProjectsRavenWrapperRouteImport.update({
   id: '/raven-wrapper',
   path: '/raven-wrapper',
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/resume': typeof ResumeRoute
   '/knowledge/$slug': typeof KnowledgeSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects/orca-top': typeof ProjectsOrcaTopRoute
   '/projects/raven-wrapper': typeof ProjectsRavenWrapperRoute
   '/knowledge/': typeof KnowledgeIndexRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -113,6 +120,7 @@ export interface FileRoutesByTo {
   '/resume': typeof ResumeRoute
   '/knowledge/$slug': typeof KnowledgeSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects/orca-top': typeof ProjectsOrcaTopRoute
   '/projects/raven-wrapper': typeof ProjectsRavenWrapperRoute
   '/knowledge': typeof KnowledgeIndexRoute
   '/projects': typeof ProjectsIndexRoute
@@ -129,6 +137,7 @@ export interface FileRoutesById {
   '/resume': typeof ResumeRoute
   '/knowledge/$slug': typeof KnowledgeSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects/orca-top': typeof ProjectsOrcaTopRoute
   '/projects/raven-wrapper': typeof ProjectsRavenWrapperRoute
   '/knowledge/': typeof KnowledgeIndexRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -146,6 +155,7 @@ export interface FileRouteTypes {
     | '/resume'
     | '/knowledge/$slug'
     | '/projects/$slug'
+    | '/projects/orca-top'
     | '/projects/raven-wrapper'
     | '/knowledge/'
     | '/projects/'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/resume'
     | '/knowledge/$slug'
     | '/projects/$slug'
+    | '/projects/orca-top'
     | '/projects/raven-wrapper'
     | '/knowledge'
     | '/projects'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/resume'
     | '/knowledge/$slug'
     | '/projects/$slug'
+    | '/projects/orca-top'
     | '/projects/raven-wrapper'
     | '/knowledge/'
     | '/projects/'
@@ -276,6 +288,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsSlugRouteImport
       parentRoute: typeof ProjectsRoute
     }
+    '/projects/orca-top': {
+      id: '/projects/orca-top'
+      path: '/orca-top'
+      fullPath: '/projects/orca-top'
+      preLoaderRoute: typeof ProjectsOrcaTopRouteImport
+      parentRoute: typeof ProjectsRoute
+    }
     '/projects/raven-wrapper': {
       id: '/projects/raven-wrapper'
       path: '/raven-wrapper'
@@ -302,12 +321,14 @@ const KnowledgeRouteWithChildren = KnowledgeRoute._addFileChildren(
 
 interface ProjectsRouteChildren {
   ProjectsSlugRoute: typeof ProjectsSlugRoute
+  ProjectsOrcaTopRoute: typeof ProjectsOrcaTopRoute
   ProjectsRavenWrapperRoute: typeof ProjectsRavenWrapperRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
 }
 
 const ProjectsRouteChildren: ProjectsRouteChildren = {
   ProjectsSlugRoute: ProjectsSlugRoute,
+  ProjectsOrcaTopRoute: ProjectsOrcaTopRoute,
   ProjectsRavenWrapperRoute: ProjectsRavenWrapperRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
 }
