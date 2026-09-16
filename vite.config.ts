@@ -45,6 +45,6 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
     pages: staticPaths.map((path) => ({ path })),
-    prerender: { enabled: true, autoStaticPathsDiscovery: false },
+    prerender: { enabled: true, autoStaticPathsDiscovery: false, crawlLinks: false },
   },
 });
