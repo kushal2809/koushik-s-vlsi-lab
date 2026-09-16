@@ -254,17 +254,11 @@ function RavenWrapper() {
         ]}
         placeholder="Add Floorplan Screenshot"
       >
-        <figure className="card-surface overflow-hidden p-2">
-          <img
-            src={floorplanAsset.url}
-            alt="RAVEN WRAPPER floorplan view showing IO pads, core area and an SRAM macro"
-            loading="lazy"
-            className="w-full rounded-md"
-          />
-          <figcaption className="px-2 py-2 font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
-            Floorplan view — IO pads, core area, SRAM macro
-          </figcaption>
-        </figure>
+        <StageFigure
+          src={floorplanAsset.url}
+          alt="RAVEN WRAPPER floorplan view showing IO pads, core area and an SRAM macro"
+          caption="Floorplan view — IO pads, core area, SRAM macro"
+        />
       </StageSection>
 
       <StageSection
@@ -278,7 +272,13 @@ function RavenWrapper() {
           "IR-drop considerations",
         ]}
         placeholder="Add Power Planning / PG Screenshot"
-      />
+      >
+        <StageFigure
+          src={powerplanAsset.url}
+          alt="ICC2 layout view of the RAVEN WRAPPER power plan across the core area"
+          caption="Power planning view — power grid across the core"
+        />
+      </StageSection>
 
       <StageSection
         num="05"
@@ -291,7 +291,13 @@ function RavenWrapper() {
           "Placement observations",
         ]}
         placeholder="Add Placement Screenshot"
-      />
+      >
+        <StageFigure
+          src={placementAsset.url}
+          alt="ICC2 placement view of RAVEN WRAPPER showing placed standard cells and the SRAM macro"
+          caption="Placement view — standard cells with SRAM macro"
+        />
+      </StageSection>
 
       <StageSection
         num="06"
@@ -304,7 +310,13 @@ function RavenWrapper() {
           "Timing observations",
         ]}
         placeholder="Add CTS Screenshot"
-      />
+      >
+        <StageFigure
+          src={ctsAsset.url}
+          alt="ICC2 layout view of the RAVEN WRAPPER clock tree after CTS"
+          caption="CTS view — clock network in the layout window"
+        />
+      </StageSection>
 
       <StageSection
         num="07"
@@ -317,7 +329,13 @@ function RavenWrapper() {
           "Routing observations",
         ]}
         placeholder="Add Routing / DRC Screenshot"
-      />
+      >
+        <StageFigure
+          src={routingAsset.url}
+          alt="ICC2 routing view of RAVEN WRAPPER showing routed nets across the core"
+          caption="Routing view — routed nets across the core"
+        />
+      </StageSection>
 
       <Section id="timing-sta">
         <div className="flex items-baseline gap-3">
@@ -334,26 +352,36 @@ function RavenWrapper() {
             <p className="mt-2 font-display text-lg">3</p>
           </div>
         </div>
-        <p className="mt-6 eyebrow">Results — editable placeholders</p>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {["WNS", "TNS", "Setup", "Hold"].map((k) => (
-            <div
-              key={k}
-              className="rounded-lg border border-dashed border-border bg-surface/40 p-5"
-            >
-              <p className="font-mono text-[0.65rem] uppercase tracking-widest text-primary">{k}</p>
-              <p className="mt-2 text-sm text-muted-foreground">Add actual value</p>
-            </div>
-          ))}
+        <p className="mt-6 eyebrow">Timing report</p>
+        <div className="mt-3">
+          <StageFigure
+            src={staReportAsset.url}
+            alt="ICC2 timing report table showing setup and hold violation summary (WNS, TNS, violation counts)"
+            caption="Timing report — setup and hold violation summary"
+          />
         </div>
       </Section>
 
       <Section id="gallery">
         <SectionTitle eyebrow="09" title="Screenshots & Reports" />
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {GALLERY.map((g) => (
-            <Placeholder key={g} label={`Add ${g}`} />
-          ))}
+          {GALLERY.map((g) =>
+            g.asset ? (
+              <figure key={g.label} className="card-surface overflow-hidden p-2">
+                <img
+                  src={g.asset.url}
+                  alt={`RAVEN WRAPPER ${g.label.toLowerCase()} screenshot`}
+                  loading="lazy"
+                  className="w-full rounded-md"
+                />
+                <figcaption className="px-2 py-2 font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+                  {g.label}
+                </figcaption>
+              </figure>
+            ) : (
+              <Placeholder key={g.label} label={`Add ${g.label}`} />
+            ),
+          )}
         </div>
       </Section>
 
