@@ -242,14 +242,7 @@ const LEARNED = [
   "Timing analysis and optimization",
 ];
 
-const SUMMARY = [
-  { label: "Technology", value: "45nm" },
-  { label: "Tool", value: "Synopsys IC Compiler II (ICC2)" },
-  { label: "Instances", value: "~21K" },
-  { label: "Metal Layers", value: "10" },
-  { label: "Target Frequency", value: "250 MHz" },
-  { label: "Clocks", value: "3" },
-];
+const METRICS = ["45nm", "ICC2", "~21K Instances", "1 Macro", "10 Metal Layers", "3 Clocks", "250 MHz"];
 
 function Placeholder({ label }: { label: string }) {
   return (
