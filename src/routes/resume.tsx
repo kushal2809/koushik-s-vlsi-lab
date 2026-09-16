@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Download, ExternalLink } from "lucide-react";
 import { PageHeader, Section, Tag } from "@/components/section";
 import { skillGroups } from "@/data/skills";
-import resumeAsset from "@/assets/koushik-resume.pdf.asset.json";
+import resumeAsset from "@/assets/koushik-resume-v2.pdf.asset.json";
 
 const RESUME_URL = resumeAsset.url;
 
@@ -54,17 +54,6 @@ function Resume() {
           </a>
         </div>
 
-        <div className="card-surface mt-8 overflow-hidden p-2 sm:p-3">
-          <iframe
-            src={RESUME_URL}
-            title="Resume of Durgam Koushik — PDF preview"
-            className="h-[520px] w-full rounded-sm bg-white sm:h-[860px] md:h-[1080px]"
-            loading="lazy"
-          />
-        </div>
-        <p className="mt-3 font-mono text-xs text-muted-foreground">
-          If the preview does not display on your device, use “View Resume” or “Download Resume” above.
-        </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <div className="card-surface p-5">
