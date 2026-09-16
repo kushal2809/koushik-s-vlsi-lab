@@ -67,6 +67,9 @@
   --ring: oklch(0.78 0.132 192);
 
   --grid-line: oklch(0.78 0.132 192 / 8%);
+  --chip-line: oklch(0.78 0.132 192 / 42%);
+  --chip-cell: oklch(0.78 0.132 192 / 11%);
+  --chip-metal: oklch(0.72 0.11 245 / 32%);
   --gradient-hero: radial-gradient(
     ellipse 70% 60% at 50% -10%,
     oklch(0.78 0.132 192 / 18%),
@@ -131,6 +134,173 @@
     border-color: oklch(0.78 0.132 192 / 45%);
     transform: translateY(-2px);
   }
+}
+
+@utility flow-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+
+  &:hover,
+  &[open] {
+    border-color: color-mix(in oklch, var(--color-primary) 45%, var(--color-border));
+    box-shadow: var(--shadow-glow);
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &[open] .flow-chevron {
+    transform: rotate(180deg);
+  }
+}
+
+@utility identity-card {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: border-color 180ms ease, transform 180ms ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 4.5rem;
+    height: 4.5rem;
+    background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 12px 12px;
+    mask-image: linear-gradient(to bottom right, transparent, black);
+    pointer-events: none;
+  }
+
+  &:hover {
+    border-color: color-mix(in oklch, var(--color-primary) 45%, var(--color-border));
+    transform: translateY(-2px);
+  }
+}
+
+.chip-figure {
+  width: min(100%, 29rem);
+  justify-self: center;
+}
+
+.chip-frame {
+  position: relative;
+  aspect-ratio: 1.14;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in oklch, var(--color-surface) 78%, transparent);
+  box-shadow: var(--shadow-card);
+}
+
+.chip-die {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklch, var(--color-primary) 35%, var(--color-border));
+  background-color: var(--color-background);
+  background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.chip-die::before,
+.chip-die::after {
+  content: "";
+  position: absolute;
+  inset: 0.65rem;
+  border: 1px solid var(--chip-line);
+  pointer-events: none;
+}
+
+.chip-die::after {
+  inset: 1rem;
+  border-color: color-mix(in oklch, var(--color-accent) 28%, transparent);
+}
+
+.chip-core,
+.chip-macro {
+  position: absolute;
+  z-index: 2;
+  border: 1px solid color-mix(in oklch, var(--color-primary) 38%, var(--color-border));
+  background-color: color-mix(in oklch, var(--color-secondary) 72%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  color: var(--color-muted-foreground);
+}
+
+.chip-core {
+  inset: 23% 24% 20% 20%;
+  padding: 0.45rem;
+  color: var(--color-primary);
+}
+
+.chip-cells {
+  position: absolute;
+  inset: 1.4rem 0.45rem 0.45rem;
+  background-image: repeating-linear-gradient(0deg, var(--chip-cell) 0 2px, transparent 2px 7px), repeating-linear-gradient(90deg, var(--chip-cell) 0 7px, transparent 7px 13px);
+}
+
+.chip-macro {
+  display: grid;
+  place-items: center;
+  background-image: repeating-linear-gradient(90deg, transparent 0 7px, var(--chip-cell) 7px 8px);
+}
+
+.chip-macro-a { inset: 8% 67% 66% 6%; }
+.chip-macro-b { inset: 62% 6% 8% 72%; }
+.chip-macro-c { inset: 9% 7% 71% 71%; }
+
+.chip-routes {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  stroke: var(--chip-metal);
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.chip-routes path {
+  fill: none;
+}
+
+.chip-routes circle {
+  fill: var(--color-primary);
+  stroke: none;
+}
+
+.chip-io {
+  position: absolute;
+  z-index: 4;
+  left: 7%;
+  right: 7%;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, var(--color-primary) 0 4px, transparent 4px 18px);
+  opacity: 0.45;
+}
+
+.chip-io-top { top: 3%; }
+.chip-io-bottom { bottom: 3%; }
+
+.chip-meta {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 0.35rem;
+  display: flex;
+  gap: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  color: var(--color-muted-foreground);
 }
 
 @utility eyebrow {
