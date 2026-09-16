@@ -5,4 +5,4 @@
 - [x] Tighten homepage spacing.
 - [x] Make all eight implementation stages expandable with concise details.
 - [x] Refine the three existing identity cards with restrained VLSI cues.
-- [ ] Validate desktop and mobile layouts and stage interaction.
+- [x] Validate desktop and mobile layouts and stage interaction.
