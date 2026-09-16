@@ -8,6 +8,7 @@ import placementAsset from "@/assets/raven-placement.jpeg.asset.json";
 import ctsAsset from "@/assets/raven-cts.jpeg.asset.json";
 import routingAsset from "@/assets/raven-routing.jpeg.asset.json";
 import staReportAsset from "@/assets/raven-sta-report.jpeg.asset.json";
+import resumeAsset from "@/assets/koushik-resume.pdf.asset.json";
 
 export const Route = createFileRoute("/projects/raven-wrapper")({
   head: () => ({
@@ -523,7 +524,7 @@ function RavenWrapper() {
             <ArrowLeft className="h-4 w-4" /> Back to Projects
           </Link>
           <a
-            href="/resume/koushik-resume.pdf"
+            href={resumeAsset.url}
             download
             className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
