@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ChevronDown, Download, ImageIcon } from "lucide-react";
+import { ArrowLeft, ChevronDown, Download, ImageIcon, X } from "lucide-react";
 import { PageHeader, Section, SectionTitle, Tag } from "@/components/section";
 import floorplanAsset from "@/assets/raven-floorplan.jpeg.asset.json";
 import powerplanAsset from "@/assets/raven-powerplan.jpeg.asset.json";
@@ -43,44 +44,183 @@ const ROLE = [
   "Timing analysis / reviews",
 ];
 
-const FLOW = [
+type Spec = { label: string; value: string };
+
+type Stage = {
+  id: string;
+  num: string;
+  title: string;
+  heading: string;
+  did: string;
+  specs: Spec[];
+  observations: string;
+  images: { src: string; alt: string; caption: string }[];
+};
+
+const STAGES: Stage[] = [
   {
-    id: "flow-floorplanning",
-    label: "Floorplanning",
-    what: "Define die and core area, place IO ports and macros, and set utilization targets.",
-    observations: "Add project-specific floorplan observations here.",
+    id: "floorplanning",
+    num: "03",
+    title: "Floorplanning",
+    heading: "Floorplan Definition",
+    did: "Defined the die and core dimensions, established the core offset, and placed the IO ports and macro for the initial physical implementation.",
+    specs: [
+      { label: "Chip Area", value: "3,130,829.270" },
+      { label: "Chip Width", value: "1469" },
+      { label: "Chip Height", value: "1469" },
+      { label: "Core Area", value: "1,367,531.270" },
+      { label: "Core Width", value: "1169" },
+      { label: "Core Height", value: "1169" },
+      { label: "Core Offset", value: "300" },
+      { label: "Utilization Ratio", value: "0.0231" },
+      { label: "Utilization", value: "2.31%" },
+      { label: "Site Rows", value: "835" },
+      { label: "Site Row Height", value: "1.40" },
+      { label: "Site Width", value: "0.19" },
+      { label: "Total Tiles", value: "5,141,095" },
+      { label: "IO Pads", value: "52" },
+      { label: "Macros", value: "1" },
+    ],
+    observations:
+      "The RAVEN WRAPPER floorplan uses a 1469 × 1469 chip area with a 1169 × 1169 core and a 300-unit core offset. The floorplan contains 835 site rows, 52 IO pads, and 1 macro, with an initial utilization ratio of 0.0231 (2.31%). These parameters were reviewed to establish the available placement area for subsequent physical design stages.",
+    images: [
+      {
+        src: floorplanAsset.url,
+        alt: "RAVEN WRAPPER floorplan view showing IO pads, macro and the standard-cell placement region",
+        caption:
+          "Initial Floorplan — Die/core organization with IO pads, macro placement, and standard-cell placement region.",
+      },
+    ],
   },
   {
-    id: "flow-power-planning",
-    label: "Power Planning",
-    what: "Build the VDD/VSS rings, straps and mesh, then connect standard-cell rails.",
-    observations: "Add project-specific power-plan observations here.",
+    id: "power-planning",
+    num: "04",
+    title: "Power Planning",
+    heading: "Power Mesh Implementation",
+    did: "Created the VDD/VSS power mesh across the core to establish a structured power distribution network for the design.",
+    specs: [
+      { label: "Technology", value: "45nm" },
+      { label: "Metal Layers Available", value: "10" },
+      { label: "Power Nets", value: "VDD / VSS" },
+      { label: "Power Mesh", value: "Implemented" },
+      { label: "PG Strategy", value: "Mesh-based" },
+      { label: "Vertical Mesh Layer", value: "Metal2" },
+      { label: "Horizontal Mesh Layer", value: "Metal3" },
+      { label: "Mesh Width", value: "1" },
+      { label: "Mesh Spacing", value: "2" },
+      { label: "Mesh Pitch", value: "20" },
+      { label: "Mesh Offset", value: "1" },
+    ],
+    observations:
+      "Observed the distribution of VDD and VSS through the power mesh across the core. The mesh structure provides multiple power paths across the design, helping distribute current through the core and providing a structured supply network for the placed cells.",
+    images: [
+      {
+        src: powerplanAsset.url,
+        alt: "RAVEN WRAPPER power mesh across the core in ICC2",
+        caption: "Power Mesh Implementation — VDD/VSS power distribution across the core.",
+      },
+    ],
   },
   {
-    id: "flow-placement",
-    label: "Placement",
-    what: "Place and legalize standard cells with timing and congestion awareness.",
-    observations: "Add project-specific placement observations here.",
+    id: "placement",
+    num: "05",
+    title: "Placement",
+    heading: "Standard Cell Placement",
+    did: "Performed standard-cell placement within the defined core area after floorplanning and power planning, while reviewing placement density and routing congestion.",
+    specs: [
+      { label: "Total Leaf Cells", value: "21,284" },
+      { label: "Standard Cells", value: "21,231" },
+      { label: "Hard Macro Cells", value: "1" },
+      { label: "Buffer / Inverter Cells", value: "2,404" },
+      { label: "Placement", value: "Completed" },
+      { label: "Congestion Review", value: "Performed" },
+    ],
+    observations:
+      "Observed the distribution of standard cells across the core and reviewed cell-density variations after placement. GCell-based congestion information was used to identify regions with higher routing demand and to understand the relationship between placement density and available routing resources.",
+    images: [
+      {
+        src: placementAsset.url,
+        alt: "RAVEN WRAPPER full-chip standard-cell placement with the SRAM macro",
+        caption:
+          "Full-Chip Placement — Standard-cell placement across the core after floorplanning and power planning.",
+      },
+    ],
   },
   {
-    id: "flow-cts",
-    label: "CTS",
-    what: "Build and balance the clock tree, then re-check timing with propagated clocks.",
-    observations: "Add project-specific CTS observations here.",
+    id: "cts",
+    num: "06",
+    title: "Clock Tree Synthesis (CTS)",
+    heading: "Clock Tree Implementation",
+    did: "Performed Clock Tree Synthesis to distribute the design clocks from their sources to the sequential elements while considering clock latency, skew, and clock connectivity.",
+    specs: [
+      { label: "Technology", value: "45nm" },
+      { label: "Number of Clocks", value: "3" },
+      { label: "CTS", value: "Performed" },
+      { label: "Clock Distribution", value: "Implemented" },
+      { label: "Clock Analysis", value: "Reviewed" },
+    ],
+    observations:
+      "Observed the generated clock tree and its distribution from the clock source to the sequential elements. Reviewed the clock paths and buffering structure to understand clock latency, skew, and clock connectivity across the design. The external clock distribution was also reviewed to understand how the clock signal propagates through the generated clock network.",
+    images: [
+      {
+        src: ctsAsset.url,
+        alt: "RAVEN WRAPPER clock tree view showing external clock distribution",
+        caption:
+          "External Clock Distribution — Clock tree view showing the distribution of the external clock through the design.",
+      },
+    ],
   },
   {
-    id: "flow-routing",
-    label: "Routing",
-    what: "Global, track and detail route, then repair DRC and antenna violations.",
-    observations: "Add project-specific routing observations here.",
+    id: "routing",
+    num: "07",
+    title: "Routing",
+    heading: "Signal Routing",
+    did: "Performed signal routing after placement and CTS to establish physical connections between the cells, macros, and IOs while utilizing the available routing resources.",
+    specs: [
+      { label: "Technology", value: "45nm" },
+      { label: "Routing Layers Available", value: "10" },
+      { label: "Routing", value: "Performed" },
+      { label: "Routing Review", value: "Completed" },
+      { label: "DRC Checks", value: "Performed" },
+    ],
+    observations:
+      "Observed the routed signal paths and routing-resource utilization across the design. Detailed routing regions were reviewed to understand routing density, physical connectivity, and areas with higher routing complexity.",
+    images: [
+      {
+        src: routingAsset.url,
+        alt: "Detailed routing view of a selected region of the RAVEN WRAPPER block",
+        caption:
+          "Detailed Routing View — Routed signal connections in a selected region of the RAVEN WRAPPER block.",
+      },
+    ],
   },
   {
-    id: "flow-sta",
-    label: "STA",
-    what: "Check setup and hold across the required modes and corners.",
-    observations: "Add project-specific timing observations here.",
+    id: "sta",
+    num: "08",
+    title: "Static Timing Analysis (STA)",
+    heading: "Timing Analysis",
+    did: "Performed Static Timing Analysis to evaluate setup and hold timing across the design and identify violating paths for further optimization.",
+    specs: [],
+    observations:
+      "STA was performed after the physical implementation stages to analyze timing behavior across the design. Both setup and hold violations were observed, and the timing reports were reviewed to identify violating paths and understand areas requiring further timing optimization.",
+    images: [
+      {
+        src: staReportAsset.url,
+        alt: "RAVEN WRAPPER STA report showing setup and hold timing violations",
+        caption:
+          "Timing Analysis — Setup & Hold — STA report showing setup and hold timing violations across the design.",
+      },
+    ],
   },
-] as const;
+];
+
+const STA_TABLE = [
+  { metric: "WNS", setup: "-2393.12", hold: "-1.89" },
+  { metric: "TNS", setup: "-3664.76", hold: "-32.15" },
+  { metric: "Violating Paths", setup: "162", hold: "293" },
+];
+
+const FLOW = STAGES.map((s) => ({ id: s.id, label: s.title }));
 
 const GALLERY = [
   { label: "Floorplan", asset: floorplanAsset },
@@ -122,54 +262,88 @@ function Placeholder({ label }: { label: string }) {
   );
 }
 
-function StageFigure({ src, alt, caption }: { src: string; alt: string; caption: string }) {
+function StageFigure({
+  src,
+  alt,
+  caption,
+  onOpen,
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+  onOpen: (img: { src: string; alt: string }) => void;
+}) {
   return (
     <figure className="card-surface overflow-hidden p-2">
-      <img src={src} alt={alt} loading="lazy" className="w-full rounded-md" />
-      <figcaption className="px-2 py-2 font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+      <button
+        type="button"
+        onClick={() => onOpen({ src, alt })}
+        className="block w-full cursor-zoom-in overflow-hidden rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label={`Enlarge image: ${caption}`}
+      >
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className="h-auto w-full rounded-md object-contain transition-opacity hover:opacity-90"
+        />
+      </button>
+      <figcaption className="px-2 py-2 text-xs leading-relaxed text-muted-foreground">
         {caption}
       </figcaption>
     </figure>
   );
 }
 
-function StageSection({
-  num,
-  title,
-  points,
-  placeholder,
-  children,
-}: {
-  num: string;
-  title: string;
-  points: string[];
-  placeholder: string;
-  children?: React.ReactNode;
-}) {
+function SpecGrid({ specs }: { specs: Spec[] }) {
   return (
-    <Section id={title.toLowerCase().replace(/[^a-z]+/g, "-")}>
-      <div className="flex items-baseline gap-3">
-        <span className="font-mono text-xs tracking-widest text-primary">{num}</span>
-        <h2 className="font-display text-2xl font-semibold">{title}</h2>
-      </div>
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        <div className="card-surface p-6">
-          <ul className="space-y-2.5 text-sm text-muted-foreground">
-            {points.map((p) => (
-              <li key={p} className="flex gap-2">
-                <span className="text-primary">&rsaquo;</span>
-                {p}
-              </li>
-            ))}
-          </ul>
+    <dl className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      {specs.map((s) => (
+        <div key={s.label} className="rounded-md border border-border bg-surface/50 px-3 py-2">
+          <dt className="font-mono text-[0.6rem] uppercase tracking-widest text-muted-foreground">
+            {s.label}
+          </dt>
+          <dd className="mt-1 font-mono text-sm text-foreground">{s.value}</dd>
         </div>
-        <div>{children ?? <Placeholder label={placeholder} />}</div>
-      </div>
-    </Section>
+      ))}
+    </dl>
+  );
+}
+
+function StaTable() {
+  return (
+    <div className="overflow-hidden rounded-md border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-surface/60">
+            <th className="px-3 py-2 text-left font-mono text-[0.6rem] uppercase tracking-widest text-muted-foreground">
+              Metric
+            </th>
+            <th className="px-3 py-2 text-left font-mono text-[0.6rem] uppercase tracking-widest text-primary">
+              Setup
+            </th>
+            <th className="px-3 py-2 text-left font-mono text-[0.6rem] uppercase tracking-widest text-primary">
+              Hold
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {STA_TABLE.map((r) => (
+            <tr key={r.metric} className="border-t border-border">
+              <td className="px-3 py-2 text-muted-foreground">{r.metric}</td>
+              <td className="px-3 py-2 font-mono">{r.setup}</td>
+              <td className="px-3 py-2 font-mono">{r.hold}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
 function RavenWrapper() {
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+
   return (
     <>
       <div className="mx-auto max-w-6xl px-5 pt-10">
@@ -217,150 +391,68 @@ function RavenWrapper() {
           <span className="font-mono text-xs tracking-widest text-primary">02</span>
           <h2 className="font-display text-2xl font-semibold">Physical Design Flow</h2>
         </div>
-        <ol className="mt-6 space-y-3">
+        <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {FLOW.map((s, i) => (
-            <li key={s.id} id={s.id}>
-              <details className="flow-card">
-                <summary className="flex cursor-pointer list-none items-center gap-3 p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
-                  <span className="font-mono text-[0.65rem] tracking-widest text-primary">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="font-display text-sm font-semibold">{s.label}</span>
-                  <ChevronDown className="flow-chevron ml-auto h-3.5 w-3.5 text-muted-foreground transition-transform" />
-                </summary>
-                <div className="border-t border-border px-4 pt-3 pb-4 text-xs leading-relaxed">
-                  <p className="text-muted-foreground">{s.what}</p>
-                  <p className="mt-3 font-mono text-[0.62rem] uppercase tracking-widest text-primary">
-                    Project observations
-                  </p>
-                  <p className="mt-1 text-muted-foreground">{s.observations}</p>
-                </div>
-              </details>
+            <li key={s.id}>
+              <a
+                href={`#${s.id}`}
+                className="flow-card flex items-center gap-3 p-4 transition-colors hover:border-primary/50"
+              >
+                <span className="font-mono text-[0.65rem] tracking-widest text-primary">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="font-display text-sm font-semibold">{s.label}</span>
+                <ChevronDown className="ml-auto h-3.5 w-3.5 -rotate-90 text-muted-foreground" />
+              </a>
             </li>
           ))}
         </ol>
       </Section>
 
-      <StageSection
-        num="03"
-        title="Floorplanning"
-        points={[
-          "Floorplan",
-          "Core / die information",
-          "IO placement",
-          "Macro placement",
-          "Utilization",
-          "Key observations",
-        ]}
-        placeholder="Add Floorplan Screenshot"
-      >
-        <StageFigure
-          src={floorplanAsset.url}
-          alt="RAVEN WRAPPER floorplan view showing IO pads, core area and an SRAM macro"
-          caption="Floorplan view — IO pads, core area, SRAM macro"
-        />
-      </StageSection>
-
-      <StageSection
-        num="04"
-        title="Power Planning"
-        points={[
-          "VDD / VSS",
-          "Power rings",
-          "Power straps / mesh",
-          "PG connectivity",
-          "IR-drop considerations",
-        ]}
-        placeholder="Add Power Planning / PG Screenshot"
-      >
-        <StageFigure
-          src={powerplanAsset.url}
-          alt="ICC2 layout view of the RAVEN WRAPPER power plan across the core area"
-          caption="Power planning view — power grid across the core"
-        />
-      </StageSection>
-
-      <StageSection
-        num="05"
-        title="Placement"
-        points={[
-          "Standard-cell placement",
-          "Cell density",
-          "GCell / congestion analysis",
-          "Placement optimization",
-          "Placement observations",
-        ]}
-        placeholder="Add Placement Screenshot"
-      >
-        <StageFigure
-          src={placementAsset.url}
-          alt="ICC2 placement view of RAVEN WRAPPER showing placed standard cells and the SRAM macro"
-          caption="Placement view — standard cells with SRAM macro"
-        />
-      </StageSection>
-
-      <StageSection
-        num="06"
-        title="CTS"
-        points={[
-          "Clock tree synthesis",
-          "Clock skew",
-          "Clock latency",
-          "Clock optimization",
-          "Timing observations",
-        ]}
-        placeholder="Add CTS Screenshot"
-      >
-        <StageFigure
-          src={ctsAsset.url}
-          alt="ICC2 layout view of the RAVEN WRAPPER clock tree after CTS"
-          caption="CTS view — clock network in the layout window"
-        />
-      </StageSection>
-
-      <StageSection
-        num="07"
-        title="Routing"
-        points={[
-          "Global routing",
-          "Detailed routing",
-          "Routing congestion",
-          "DRC checks",
-          "Routing observations",
-        ]}
-        placeholder="Add Routing / DRC Screenshot"
-      >
-        <StageFigure
-          src={routingAsset.url}
-          alt="ICC2 routing view of RAVEN WRAPPER showing routed nets across the core"
-          caption="Routing view — routed nets across the core"
-        />
-      </StageSection>
-
-      <Section id="timing-sta">
-        <div className="flex items-baseline gap-3">
-          <span className="font-mono text-xs tracking-widest text-primary">08</span>
-          <h2 className="font-display text-2xl font-semibold">Timing / STA</h2>
-        </div>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2">
-          <div className="card-surface p-5">
-            <p className="eyebrow">Target Frequency</p>
-            <p className="mt-2 font-display text-lg">250 MHz</p>
+      {STAGES.map((stage) => (
+        <Section key={stage.id} id={stage.id}>
+          <div className="flex items-baseline gap-3">
+            <span className="font-mono text-xs tracking-widest text-primary">{stage.num}</span>
+            <h2 className="font-display text-2xl font-semibold">{stage.title}</h2>
           </div>
-          <div className="card-surface p-5">
-            <p className="eyebrow">Number of clocks</p>
-            <p className="mt-2 font-display text-lg">3</p>
+          <p className="mt-2 eyebrow">{stage.heading}</p>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+            <div className="space-y-4">
+              <div className="card-surface p-5">
+                <p className="font-mono text-[0.62rem] uppercase tracking-widest text-primary">
+                  What I Did
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{stage.did}</p>
+              </div>
+
+              <div className="card-surface p-5">
+                <p className="font-mono text-[0.62rem] uppercase tracking-widest text-primary">
+                  Project Specifications
+                </p>
+                <div className="mt-3">
+                  {stage.specs.length > 0 ? <SpecGrid specs={stage.specs} /> : <StaTable />}
+                </div>
+              </div>
+
+              <div className="card-surface p-5">
+                <p className="font-mono text-[0.62rem] uppercase tracking-widest text-primary">
+                  Project Observations
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {stage.observations}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {stage.images.map((img) => (
+                <StageFigure key={img.src} {...img} onOpen={setLightbox} />
+              ))}
+            </div>
           </div>
-        </div>
-        <p className="mt-6 eyebrow">Timing report</p>
-        <div className="mt-3">
-          <StageFigure
-            src={staReportAsset.url}
-            alt="ICC2 timing report table showing setup and hold violation summary (WNS, TNS, violation counts)"
-            caption="Timing report — setup and hold violation summary"
-          />
-        </div>
-      </Section>
+        </Section>
+      ))}
 
       <Section id="gallery">
         <SectionTitle eyebrow="09" title="Screenshots & Reports" />
@@ -368,12 +460,24 @@ function RavenWrapper() {
           {GALLERY.map((g) =>
             g.asset ? (
               <figure key={g.label} className="card-surface overflow-hidden p-2">
-                <img
-                  src={g.asset.url}
-                  alt={`RAVEN WRAPPER ${g.label.toLowerCase()} screenshot`}
-                  loading="lazy"
-                  className="w-full rounded-md"
-                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    setLightbox({
+                      src: g.asset!.url,
+                      alt: `RAVEN WRAPPER ${g.label.toLowerCase()} screenshot`,
+                    })
+                  }
+                  className="block w-full cursor-zoom-in overflow-hidden rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label={`Enlarge ${g.label} screenshot`}
+                >
+                  <img
+                    src={g.asset.url}
+                    alt={`RAVEN WRAPPER ${g.label.toLowerCase()} screenshot`}
+                    loading="lazy"
+                    className="h-auto w-full rounded-md object-contain transition-opacity hover:opacity-90"
+                  />
+                </button>
                 <figcaption className="px-2 py-2 font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
                   {g.label}
                 </figcaption>
@@ -422,6 +526,31 @@ function RavenWrapper() {
           </a>
         </div>
       </Section>
+
+      {lightbox && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Enlarged screenshot"
+          onClick={() => setLightbox(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 p-4 backdrop-blur-sm"
+        >
+          <button
+            type="button"
+            onClick={() => setLightbox(null)}
+            aria-label="Close"
+            className="absolute right-4 top-4 rounded-md border border-border bg-surface p-2 text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <X className="h-4 w-4" />
+          </button>
+          <img
+            src={lightbox.src}
+            alt={lightbox.alt}
+            className="max-h-[90vh] max-w-[95vw] rounded-md object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </>
   );
 }
