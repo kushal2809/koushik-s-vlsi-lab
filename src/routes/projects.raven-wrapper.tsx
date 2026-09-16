@@ -242,14 +242,7 @@ const LEARNED = [
   "Timing analysis and optimization",
 ];
 
-const SUMMARY = [
-  { label: "Technology", value: "45nm" },
-  { label: "Tool", value: "Synopsys IC Compiler II (ICC2)" },
-  { label: "Instances", value: "~21K" },
-  { label: "Metal Layers", value: "10" },
-  { label: "Target Frequency", value: "250 MHz" },
-  { label: "Clocks", value: "3" },
-];
+const METRICS = ["45nm", "ICC2", "~21K Instances", "1 Macro", "10 Metal Layers", "3 Clocks", "250 MHz"];
 
 function Placeholder({ label }: { label: string }) {
   return (
@@ -501,15 +494,27 @@ function RavenWrapper() {
       </Section>
 
       <Section id="summary">
-        <SectionTitle eyebrow="11" title="Project Summary" />
-        <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {SUMMARY.map((s) => (
-            <div key={s.label} className="card-surface p-5">
-              <dt className="eyebrow">{s.label}</dt>
-              <dd className="mt-2 font-display text-base">{s.value}</dd>
-            </div>
+        <SectionTitle eyebrow="11" title="Final Project Summary" />
+        <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+          RAVEN WRAPPER is a 45nm Physical Design implementation project carried out using Synopsys
+          IC Compiler II (ICC2). The design contains approximately 21K instances, 1 macro, 10 metal
+          layers, 3 clocks, and has a 250 MHz target frequency. The project provided hands-on
+          exposure to the complete physical design flow, including floorplanning, IO and macro
+          placement, power planning, standard-cell placement, CTS, routing, DRC checks, and static
+          timing analysis.
+        </p>
+        <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-2">
+          {METRICS.map((m, i) => (
+            <span key={m} className="flex items-center gap-2">
+              {i > 0 && (
+                <span aria-hidden="true" className="font-mono text-xs text-muted-foreground/50">
+                  |
+                </span>
+              )}
+              <span className="card-surface px-3 py-1.5 font-mono text-xs tracking-wide">{m}</span>
+            </span>
           ))}
-        </dl>
+        </div>
         <div className="mt-7 flex flex-wrap gap-3">
           <Link
             to="/projects"
