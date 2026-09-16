@@ -1,12 +1,24 @@
+export type ArticleSection = {
+  heading: string;
+  body?: string[];
+  bullets?: string[];
+  flow?: string[];
+};
+
 export type Article = {
   slug: string;
   title: string;
   category: string;
   topic: string;
+  /** Two-digit number, shown on Physical Design cards. */
+  num?: string;
+  /** One-line explanation used on the knowledge card. */
+  short?: string;
   intro: string;
-  explanation: string[];
-  example: string;
-  takeaway: string;
+  explanation?: string[];
+  sections?: ArticleSection[];
+  example?: string;
+  takeaway?: string;
 };
 
 export type Category = {
