@@ -523,7 +523,7 @@ function RavenWrapper() {
             <ArrowLeft className="h-4 w-4" /> Back to Projects
           </Link>
           <a
-            href="/resume/koushik-resume.pdf"
+            href={resumeAsset.url}
             download
             className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
