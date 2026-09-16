@@ -2,13 +2,21 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ChevronDown, Download, ImageIcon, X } from "lucide-react";
 import { PageHeader, Section, SectionTitle, Tag } from "@/components/section";
-import floorplanAsset from "@/assets/raven-floorplan.jpeg.asset.json";
-import powerplanAsset from "@/assets/raven-powerplan.jpeg.asset.json";
-import placementAsset from "@/assets/raven-placement.jpeg.asset.json";
-import ctsAsset from "@/assets/raven-cts.jpeg.asset.json";
-import routingAsset from "@/assets/raven-routing.jpeg.asset.json";
-import staReportAsset from "@/assets/raven-sta-report.jpeg.asset.json";
-import resumeAsset from "@/assets/koushik-resume-v2.pdf.asset.json";
+import floorplanUrl from "@/assets/raven-floorplan.jpeg";
+import powerplanUrl from "@/assets/raven-powerplan.jpeg";
+import placementUrl from "@/assets/raven-placement.jpeg";
+import ctsUrl from "@/assets/raven-cts.jpeg";
+import routingUrl from "@/assets/raven-routing.jpeg";
+import staReportUrl from "@/assets/raven-sta-report.jpeg";
+import resumeUrl from "@/assets/koushik-resume-v2.pdf?url";
+
+const floorplanAsset = { url: floorplanUrl };
+const powerplanAsset = { url: powerplanUrl };
+const placementAsset = { url: placementUrl };
+const ctsAsset = { url: ctsUrl };
+const routingAsset = { url: routingUrl };
+const staReportAsset = { url: staReportUrl };
+const resumeAsset = { url: resumeUrl };
 
 export const Route = createFileRoute("/projects/raven-wrapper")({
   head: () => ({
