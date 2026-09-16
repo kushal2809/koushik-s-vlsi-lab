@@ -20,9 +20,9 @@ export const Route = createFileRoute("/projects/$slug")({
     return {
       meta: [
         { title },
-        { name: "description", content: project.tagline },
+        { name: "description", content: project.description },
         { property: "og:title", content: title },
-        { property: "og:description", content: project.tagline },
+        { property: "og:description", content: project.description },
       ],
     };
   },
@@ -43,7 +43,7 @@ function ProjectDetail() {
         </Link>
       </div>
 
-      <PageHeader eyebrow={project.status} title={project.name} intro={project.tagline} />
+      <PageHeader eyebrow={project.status} title={project.name} intro={project.description} />
 
       <Section>
         <SectionTitle title="Design specifications" />
