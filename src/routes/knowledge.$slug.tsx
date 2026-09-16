@@ -51,25 +51,79 @@ function ArticlePage() {
 
       <Section className="max-w-3xl">
         <article className="space-y-5">
-          {article.explanation.map((p) => (
+          {article.explanation?.map((p) => (
             <p key={p.slice(0, 24)} className="text-base leading-relaxed text-muted-foreground">
               {p}
             </p>
           ))}
 
-          <div className="card-surface p-6">
-            <p className="eyebrow">Practical example</p>
-            <p className="mt-3 font-mono text-sm leading-relaxed text-foreground/90">
-              {article.example}
-            </p>
-          </div>
+          {article.sections?.map((s) => (
+            <section key={s.heading} className="card-surface p-6">
+              <h2 className="font-display text-base font-semibold">{s.heading}</h2>
 
-          <div className="rounded-lg border border-primary/30 bg-primary/10 p-6">
-            <p className="eyebrow">Key takeaway</p>
-            <p className="mt-3 text-sm leading-relaxed">{article.takeaway}</p>
-          </div>
+              {s.flow && <FlowChain steps={s.flow} />}
+
+              {s.bullets && (
+                <ul className="mt-4 space-y-2">
+                  {s.bullets.map((b) => (
+                    <li
+                      key={b.slice(0, 24)}
+                      className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground"
+                    >
+                      <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {s.body?.map((p) => (
+                <p
+                  key={p.slice(0, 24)}
+                  className="mt-4 text-sm leading-relaxed text-muted-foreground"
+                >
+                  {p}
+                </p>
+              ))}
+            </section>
+          ))}
+
+          {article.example && (
+            <div className="card-surface p-6">
+              <p className="eyebrow">Practical example</p>
+              <p className="mt-3 font-mono text-sm leading-relaxed text-foreground/90">
+                {article.example}
+              </p>
+            </div>
+          )}
+
+          {article.takeaway && (
+            <div className="rounded-lg border border-primary/30 bg-primary/10 p-6">
+              <p className="eyebrow">Key takeaway</p>
+              <p className="mt-3 text-sm leading-relaxed">{article.takeaway}</p>
+            </div>
+          )}
         </article>
       </Section>
     </>
+  );
+}
+
+function FlowChain({ steps }: { steps: string[] }) {
+  return (
+    <ol className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-2">
+      {steps.map((step, i) => (
+        <li key={step} className="flex items-center gap-2">
+          <span className="rounded-md border border-border bg-secondary px-2.5 py-1 font-mono text-xs text-secondary-foreground">
+            {step}
+          </span>
+          {i < steps.length - 1 && (
+            <span aria-hidden className="font-mono text-xs text-primary">
+              →
+            </span>
+          )}
+        </li>
+      ))}
+    </ol>
   );
 }
