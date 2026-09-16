@@ -8,7 +8,7 @@ import placementAsset from "@/assets/raven-placement.jpeg.asset.json";
 import ctsAsset from "@/assets/raven-cts.jpeg.asset.json";
 import routingAsset from "@/assets/raven-routing.jpeg.asset.json";
 import staReportAsset from "@/assets/raven-sta-report.jpeg.asset.json";
-import resumeAsset from "@/assets/koushik-resume.pdf.asset.json";
+import resumeAsset from "@/assets/koushik-resume-v2.pdf.asset.json";
 
 export const Route = createFileRoute("/projects/raven-wrapper")({
   head: () => ({
