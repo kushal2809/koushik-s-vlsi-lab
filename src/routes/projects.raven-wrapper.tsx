@@ -2,6 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ChevronDown, Download, ImageIcon } from "lucide-react";
 import { PageHeader, Section, SectionTitle, Tag } from "@/components/section";
 import floorplanAsset from "@/assets/raven-floorplan.jpeg.asset.json";
+import powerplanAsset from "@/assets/raven-powerplan.jpeg.asset.json";
+import placementAsset from "@/assets/raven-placement.jpeg.asset.json";
+import ctsAsset from "@/assets/raven-cts.jpeg.asset.json";
+import routingAsset from "@/assets/raven-routing.jpeg.asset.json";
+import staReportAsset from "@/assets/raven-sta-report.jpeg.asset.json";
 
 export const Route = createFileRoute("/projects/raven-wrapper")({
   head: () => ({
@@ -78,13 +83,13 @@ const FLOW = [
 ] as const;
 
 const GALLERY = [
-  "Floorplan",
-  "Power Planning",
-  "Placement",
-  "CTS",
-  "Routing",
-  "STA",
-  "DRC",
+  { label: "Floorplan", asset: floorplanAsset },
+  { label: "Power Planning", asset: powerplanAsset },
+  { label: "Placement", asset: placementAsset },
+  { label: "CTS", asset: ctsAsset },
+  { label: "Routing", asset: routingAsset },
+  { label: "STA", asset: staReportAsset },
+  { label: "DRC", asset: null },
 ];
 
 const LEARNED = [
@@ -114,6 +119,17 @@ function Placeholder({ label }: { label: string }) {
         {label}
       </span>
     </div>
+  );
+}
+
+function StageFigure({ src, alt, caption }: { src: string; alt: string; caption: string }) {
+  return (
+    <figure className="card-surface overflow-hidden p-2">
+      <img src={src} alt={alt} loading="lazy" className="w-full rounded-md" />
+      <figcaption className="px-2 py-2 font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+        {caption}
+      </figcaption>
+    </figure>
   );
 }
 
