@@ -34,15 +34,14 @@ export const categories: Category[] = [
     name: "Physical Design",
     description: "From floorplan to signoff — the backend implementation flow.",
     topics: [
+      "Physical Design Flow",
       "Floorplanning",
       "Power Planning",
       "Placement",
       "CTS",
       "Routing",
       "STA",
-      "Congestion",
-      "IR Drop",
-      "Electromigration",
+      "Physical Verification / DRC",
     ],
   },
   {
