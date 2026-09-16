@@ -14,6 +14,8 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
 
+const BASE_URL = import.meta.env.BASE_URL;
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -101,9 +103,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
       },
-      { rel: "icon", type: "image/png", href: "/favicon.png", sizes: "64x64" },
-      { rel: "icon", type: "image/png", href: "/favicon-32x32.png", sizes: "32x32" },
-      { rel: "apple-touch-icon", type: "image/png", href: "/favicon.png" },
+      { rel: "icon", type: "image/png", href: `${BASE_URL}favicon.png`, sizes: "64x64" },
+      { rel: "icon", type: "image/png", href: `${BASE_URL}favicon-32x32.png`, sizes: "32x32" },
+      { rel: "apple-touch-icon", type: "image/png", href: `${BASE_URL}favicon.png` },
     ],
   }),
   shellComponent: RootShell,
