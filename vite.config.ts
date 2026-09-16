@@ -27,6 +27,20 @@ const staticPaths = [
 
 export default defineConfig({
   vite: { base },
+  // On GitHub Actions emit a plain static site into .output/public (what the
+  // Pages workflow uploads). Elsewhere the default Lovable output is kept.
+  ...(process.env["GITHUB_ACTIONS"]
+    ? {
+        nitro: {
+          preset: "static",
+          output: {
+            dir: ".output",
+            publicDir: ".output/public",
+            serverDir: ".output/server",
+          },
+        } as const,
+      }
+    : {}),
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
