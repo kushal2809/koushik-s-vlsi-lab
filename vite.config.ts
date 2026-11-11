@@ -21,6 +21,7 @@ const staticPaths = [
   "/activities",
   "/resume",
   "/contact",
+  "/sta-calculator",
   ...projects.map((project) => `/projects/${project.slug}`),
   ...articles.map((article) => `/knowledge/${article.slug}`),
 ];

@@ -76,6 +76,12 @@ function Knowledge() {
           >
             View My RAVEN WRAPPER Project <ArrowRight className="h-3.5 w-3.5" />
           </Link>
+          <Link
+            to="/sta-calculator"
+            className="mt-5 ml-3 inline-flex items-center gap-1.5 rounded-md border border-primary/40 px-3 py-1.5 text-sm text-primary transition-colors hover:bg-primary/10"
+          >
+            Open STA Engine <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
       </Section>
 
