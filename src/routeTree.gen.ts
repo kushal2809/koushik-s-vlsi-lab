@@ -17,6 +17,7 @@ import { Route as KnowledgeRouteImport } from './routes/knowledge'
 import { Route as PdJourneyRouteImport } from './routes/pd-journey'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ResumeRouteImport } from './routes/resume'
+import { Route as StaCalculatorRouteImport } from './routes/sta-calculator'
 import { Route as KnowledgeIndexRouteImport } from './routes/knowledge.index'
 import { Route as KnowledgeSlugRouteImport } from './routes/knowledge.$slug'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
@@ -64,6 +65,11 @@ const ResumeRoute = ResumeRouteImport.update({
   path: '/resume',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaCalculatorRoute = StaCalculatorRouteImport.update({
+  id: '/sta-calculator',
+  path: '/sta-calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KnowledgeIndexRoute = KnowledgeIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/pd-journey': typeof PdJourneyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/resume': typeof ResumeRoute
+  '/sta-calculator': typeof StaCalculatorRoute
   '/knowledge/$slug': typeof KnowledgeSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/projects/orca-top': typeof ProjectsOrcaTopRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/pd-journey': typeof PdJourneyRoute
   '/resume': typeof ResumeRoute
+  '/sta-calculator': typeof StaCalculatorRoute
   '/knowledge/$slug': typeof KnowledgeSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/projects/orca-top': typeof ProjectsOrcaTopRoute
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/pd-journey': typeof PdJourneyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/resume': typeof ResumeRoute
+  '/sta-calculator': typeof StaCalculatorRoute
   '/knowledge/$slug': typeof KnowledgeSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/projects/orca-top': typeof ProjectsOrcaTopRoute
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/pd-journey'
     | '/projects'
     | '/resume'
+    | '/sta-calculator'
     | '/knowledge/$slug'
     | '/projects/$slug'
     | '/projects/orca-top'
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/pd-journey'
     | '/resume'
+    | '/sta-calculator'
     | '/knowledge/$slug'
     | '/projects/$slug'
     | '/projects/orca-top'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '/pd-journey'
     | '/projects'
     | '/resume'
+    | '/sta-calculator'
     | '/knowledge/$slug'
     | '/projects/$slug'
     | '/projects/orca-top'
@@ -200,6 +212,7 @@ export interface RootRouteChildren {
   PdJourneyRoute: typeof PdJourneyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
   ResumeRoute: typeof ResumeRoute
+  StaCalculatorRoute: typeof StaCalculatorRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -258,6 +271,13 @@ declare module '@tanstack/react-router' {
       path: '/resume'
       fullPath: '/resume'
       preLoaderRoute: typeof ResumeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sta-calculator': {
+      id: '/sta-calculator'
+      path: '/sta-calculator'
+      fullPath: '/sta-calculator'
+      preLoaderRoute: typeof StaCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/knowledge/': {
@@ -346,6 +366,7 @@ const rootRouteChildren: RootRouteChildren = {
   PdJourneyRoute: PdJourneyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
   ResumeRoute: ResumeRoute,
+  StaCalculatorRoute: StaCalculatorRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
