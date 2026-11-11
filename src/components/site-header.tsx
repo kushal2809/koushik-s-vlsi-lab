@@ -8,6 +8,7 @@ const NAV = [
   { to: "/pd-journey", label: "PD Journey" },
   { to: "/projects", label: "Projects" },
   { to: "/knowledge", label: "VLSI Knowledge" },
+  { to: "/sta-calculator", label: "STA Engine" },
   { to: "/activities", label: "Activities" },
   { to: "/resume", label: "Resume" },
   { to: "/contact", label: "Contact" },

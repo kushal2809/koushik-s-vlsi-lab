@@ -11,6 +11,9 @@ export function SiteFooter() {
           <Link to="/knowledge" className="transition-colors hover:text-foreground">
             Knowledge
           </Link>
+          <Link to="/sta-calculator" className="transition-colors hover:text-foreground">
+            STA Engine
+          </Link>
           <Link to="/projects" className="transition-colors hover:text-foreground">
             Projects
           </Link>
